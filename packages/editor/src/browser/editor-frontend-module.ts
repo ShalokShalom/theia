@@ -7,7 +7,7 @@
 
 import { ContainerModule } from 'inversify';
 import { CommandContribution, MenuContribution } from "@theia/core/lib/common";
-import { OpenHandler, WidgetFactory, FrontendApplicationContribution, KeybindingContext } from '@theia/core/lib/browser';
+import { OpenHandler, WidgetFactory, FrontendApplicationContribution, KeybindingContext, KeybindingContribution } from '@theia/core/lib/browser';
 import { EditorManager } from './editor-manager';
 import { EditorContribution } from './editor-contribution';
 import { EditorMenuContribution } from './editor-menu';
@@ -16,6 +16,10 @@ import { EditorTextFocusContext } from "./editor-keybinding-contexts";
 import { bindEditorPreferences } from './editor-preferences';
 import { EditorDecorationsService } from './editor-decorations-service';
 import { EditorWidgetFactory } from './editor-widget-factory';
+import { EditorNavigationContribution } from './editor-navigation-contribution';
+import { NavigationLocationUpdater } from './navigation/navigation-location-updater';
+import { NavigationLocationService } from './navigation/navigation-location-service';
+import { NavigationLocationSimilarity } from './navigation/navigation-location-similarity';
 
 export default new ContainerModule(bind => {
     bindEditorPreferences(bind);
@@ -34,4 +38,14 @@ export default new ContainerModule(bind => {
     bind(FrontendApplicationContribution).toService(EditorContribution);
 
     bind(EditorDecorationsService).toSelf().inSingletonScope();
+
+    bind(EditorNavigationContribution).toSelf().inSingletonScope();
+    bind(CommandContribution).toService(EditorNavigationContribution);
+    bind(MenuContribution).toService(EditorNavigationContribution);
+    bind(KeybindingContribution).toService(EditorNavigationContribution);
+    bind(FrontendApplicationContribution).toService(EditorNavigationContribution);
+
+    bind(NavigationLocationService).toSelf().inSingletonScope();
+    bind(NavigationLocationUpdater).toSelf().inSingletonScope();
+    bind(NavigationLocationSimilarity).toSelf().inSingletonScope();
 });

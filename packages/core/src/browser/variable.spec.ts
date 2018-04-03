@@ -7,8 +7,8 @@
 
 import * as chai from 'chai';
 import { Container, ContainerModule } from 'inversify';
-import { ILogger, Disposable } from '@theia/core/lib/common';
-import { MockLogger } from '@theia/core/lib/common/test/mock-logger';
+import { ILogger, Disposable } from '../common';
+import { MockLogger } from '../common/test/mock-logger';
 import { Variable, VariableRegistry } from './variable';
 
 const expect = chai.expect;
